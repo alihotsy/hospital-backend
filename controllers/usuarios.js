@@ -3,14 +3,21 @@ const Usuario = require('../models/usuario');
 const bcryptjs = require('bcryptjs');
 const generarJWT = require('../helpers/jwt');
 
-const getUsuarios = async(req,res) => {
+const getUsuarios = async(req = request,res) => {
 
-    const usuarios = await Usuario.find();
+    const { desde = 0 } = req.query;
+
+    const [usuarios, total] = await Promise.all([
+        Usuario.find().skip(Number(desde)).limit(5),
+        Usuario.countDocuments()
+    ]);
+
 
     res.json({
         ok:true,
         usuarios,
-        uid: req.uid
+        uid: req.uid,
+        total
     })
 
 }
