@@ -11,6 +11,9 @@ const PORT = process.env.PORT;
 //Configurar CORS
 app.use(cors())
 
+//Carpeta pública
+app.use(express.static('public'));
+
 //Lectura y parseo del Body
 app.use(express.json());
 
