@@ -93,10 +93,13 @@ const googleSignIn = async(req, res) => {
 
 const renewToken = async(req,res = response) => {
 
-    const token = await generarJWT(req.uid);
+    const usuario = req.usuario;
+
+    const token = await generarJWT(usuario.id);
 
     res.json({
         ok:true,
+        usuario,
         token
     })
 

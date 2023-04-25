@@ -92,6 +92,17 @@ const actualizarUsuario = async(req = request, res) => {
                 msg: 'El email ya existe!'
             })
         }
+
+        if(usuarioDB.google) {
+            delete resto.email;
+        }
+
+        // if(usuarioDB.google && !existsUserByEmail) {
+        //     return res.status(400).json({
+        //         ok:false,
+        //         msg: 'Usuarios de Google no pueden cambiar su email'
+        //     })
+        // }
         
         const usuarioActualizado = await Usuario.findByIdAndUpdate(id, resto, {new:true});
 
