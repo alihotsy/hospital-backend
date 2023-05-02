@@ -15,8 +15,9 @@ const getHospitales = async(req, res = response) => {
 
 const crearHospital = async(req, res = response) => {
     
+    const usuario = req.usuario;
 
-    const hospital = new Hospital({...req.body, usuario:req.uid});
+    const hospital = new Hospital({...req.body, usuario:usuario.id});
 
     try {
 
@@ -27,6 +28,7 @@ const crearHospital = async(req, res = response) => {
             hospital
         })
     } catch (error) {
+        console.log(error);
         res.status(500).json({
             ok:false,
             msg: 'Hable con el ADMIN'
