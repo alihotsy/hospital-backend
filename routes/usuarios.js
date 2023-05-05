@@ -2,7 +2,7 @@ const { Router } = require('express');
 const { getUsuarios, crearUsuario, actualizarUsuario, eliminarUsuario } = require('../controllers/usuarios');
 const { check } = require('express-validator');
 const validarCampos = require('../middlewares/validar-campos');
-const validarJWT = require('../middlewares/validar-jwt');
+const { validarJWT, validarRole } = require('../middlewares/validar-jwt');
 
 const router = Router();
 
@@ -19,6 +19,7 @@ router.post('/', [
 
 router.put('/:id',[
     validarJWT,
+    validarRole,
     check('id', 'ID inválido').isMongoId(),
     check('nombre','El nombre es obligatorio').trim().not().isEmpty(),
     check('email', 'El email es obligatorio').isEmail(),
@@ -28,6 +29,7 @@ router.put('/:id',[
 
 router.delete('/:id',[
     validarJWT,
+    validarRole,
     check('id', 'ID inválido').isMongoId(),
     validarCampos
 ], eliminarUsuario);

@@ -19,7 +19,7 @@ const validarJWT = async(req = request,res, next) => {
         const usuarioDB = await Usuario.findById(uid);
 
         if(!usuarioDB) {
-            return res.status(401).json({
+            return res.status(404).json({
                 ok:false,
                 msg: 'Este usuario no existe en la BD'
             })
@@ -39,4 +39,24 @@ const validarJWT = async(req = request,res, next) => {
 
 }
 
-module.exports = validarJWT;
+const validarRole = (req,res,next) => {
+
+    const { id } = req.params;
+    const { role } = req.usuario;
+
+   
+    if(role !== 'ADMIN_ROLE' && id !== req.usuario.id.toString()) {
+       return res.status(401).json({
+        ok:false,
+        msg:'No tiene privilegios para realizar esta acción - DENEGADO!'
+       })
+    }
+
+    next();
+
+}
+
+module.exports = {
+    validarJWT,
+    validarRole
+};
